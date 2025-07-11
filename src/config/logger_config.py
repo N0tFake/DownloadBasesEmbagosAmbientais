@@ -3,25 +3,58 @@ import datetime
 from pathlib import Path
 from project_routes import Routes
 
+class MemoryHandler(logging.Handler):
+    def __init__(self, log_storage):
+        super().__init__()
+        self.log_storage = log_storage
+    
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            self.log_storage.append(msg)
+        except Exception:
+            self.handleError(record)
+
 class LoggerConfig():
-  def __init__(self, name="GetBasesEmbargos", level=logging.INFO):
-    self.logger = logging.getLogger(name)
+  def __init__(self, name="GetBasesEmbargos", sub_name=None, level=logging.INFO):
+    self.name = f"{name}.{sub_name}" if sub_name else name
+    self.str_formatter = '[%(asctime)s] %(name)s - %(levelname)s: %(message)s'
+    self.logger = logging.getLogger(self.name)
     self.logger.setLevel(level)
 
-    ch = logging.StreamHandler()
-    ch.setLevel(level)
-
-    formatter = logging.Formatter('[%(asctime)s] %(name)s - %(levelname)s: %(message)s')
-    ch.setFormatter(formatter)
-    
-    self.logger.addHandler(ch)
-    
     self.log_messages = []
-    memory_handler = MemoryHandler(self.log_messages)
-    memory_handler.setLevel(level)
-    memory_handler.setFormatter(formatter)
-    self.logger.addHandler(memory_handler)
+    if not self.logger.hasHandlers():  
+      self.log_formatter = logging.Formatter(self.str_formatter)
+      
+      ch = logging.StreamHandler()
+      ch.setLevel(level)
+      ch.setFormatter(self.log_formatter)
+      self.logger.addHandler(ch)
+
+      memory_handler = MemoryHandler(self.log_messages)
+      memory_handler.setLevel(level)
+      memory_handler.setFormatter(self.log_formatter)
+      self.logger.addHandler(memory_handler)
     
+    else:
+      for handler in self.logger.handlers:
+        if isinstance(handler, MemoryHandler):
+          self.log_messages = handler.log_storage
+          break
+        else:
+          self.__recover_memory_handler()
+
+  def __recover_memory_handler(self):
+    for handler in self.logger.handlers:
+      if isinstance(handler, MemoryHandler):
+        self.log_messages = handler.log_storage
+        break
+      else:
+        memory_handler = MemoryHandler(self.log_messages)
+        memory_handler.setLevel(self.logger.level)
+        memory_handler.setFormatter(logging.Formatter(self.str_formatter))
+        self.logger.addHandler(memory_handler)
+
   def get_logger(self):
     return self.logger
   
@@ -51,16 +84,4 @@ class LoggerConfig():
 
   def clear_log_memory(self):
     self.log_messages.clear()
-  
-class MemoryHandler(logging.Handler):
-    def __init__(self, log_storage):
-        super().__init__()
-        self.log_storage = log_storage
-    
-    def emit(self, record):
-        try:
-            msg = self.format(record)
-            self.log_storage.append(msg)
-        except Exception:
-            self.handleError(record)
     

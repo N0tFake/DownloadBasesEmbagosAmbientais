@@ -104,15 +104,13 @@ class CheckLink:
         
         return status_messages.get(status_code, f"Status: {status_code}")
 
-    def print_result(self):
-        print(f"\t|{'='*100}")
-        print(f"\t|URL: {self.url}")
-        print(f"\t|Status: {self.status_code} - {self.status_message}")
-        print(f"\t|Válido: {'✅' if self.is_valid else '❌'}")
-        print(f"\t|Arquivo compactado: {'✅' if self.is_compacted_file else '❌'}")
-        
-        if not self.is_valid:
-            print(f"\t|Tipo de erro: {self.error_type}")
-            print(f"\t|Mensagem: {self.error_message}")
-        
-        print(f"\t|{'='*100}")
+    def result_dict(self):
+        return {
+            'url': self.url,
+            'status_code': self.status_code,
+            'status_message': self.status_message,
+            'is_valid': self.is_valid,
+            'is_compacted_file': self.is_compacted_file,
+            'error_type': str(self.error_type) if self.error_type else None,
+            'error_message': self.error_message
+        }

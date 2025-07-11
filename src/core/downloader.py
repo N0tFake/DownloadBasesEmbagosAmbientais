@@ -2,6 +2,7 @@ import ssl
 import certifi
 import mimetypes
 from urllib.request import urlretrieve, urlopen
+from pathlib import Path
 
 
 #! WARNING
@@ -39,14 +40,14 @@ file_name = "teste.zip"
 #   print(f"{name}: {value}")
   
 class Downloader:
-    def __init__(self, url: str, file_name: str):
-        self.url = url
-        self.file_name = file_name
-
-    def download(self):
+    def download(self, url, file_name, file_path):
+        output = Path(file_path).joinpath(file_name)
         try:
-            print(f"Downloading {self.file_name} from {self.url}...")
-            self.path, self.header = urlretrieve(self.url, self.file_name)
-            print(f"Downloaded {self.file_name} successfully.")
+            print(f"Downloading {file_name} from {url}...")
+            path, header = urlretrieve(url, output)
+            return {
+                'path': path, 
+                'header': header
+            }
         except Exception as e:
-            print(f"Error downloading {self.file_name}: {e}")
+            print(f"Error downloading {file_name}: {e}")
