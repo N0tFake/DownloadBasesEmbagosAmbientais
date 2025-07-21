@@ -30,7 +30,7 @@ MAGIC_SIGNATURES = {
   b'7z\xbc\xaf\x27\x1c': '7z'
 }
 
-class CheckCompactedFile:
+class CheckCompactedFileResponse:
   
   def __init__(self, url_or_response):
     self.url_or_response = url_or_response
@@ -58,8 +58,7 @@ class CheckCompactedFile:
     if isinstance(self.url_or_response, aiohttp.ClientResponse):
       return self.url_or_response.headers.get('Content-Type')
     
-    elif isinstance(self.url_or_response, str):
-      return self.__local_file_is_compacted(self.url_or_response)
+    #TODO CRIAR UM VERIFICADOR PARA LINK, PARA OBTER A RESPONSE
       
     else:
       return None
@@ -74,14 +73,22 @@ class CheckCompactedFile:
         return None
 
     return None
-      
+
+class CheckCompactedFileLocal:
+  def __init__(self, path_file):
+    self.path_file = path_file
+    
+  def is_valid(self):
+    return self.__local_file_is_compacted(self.path_file)
+    
   def __local_file_is_compacted(self, path_file):
+    print(f"Checking if {path_file} is a compacted file...")
     try:
       mime = magic.Magic(mime=True)
-      file_mime = mime.from_file(path_file)
+      file_mime = mime.from_file(str(path_file))
       
-      return file_mime if file_mime in CONTENT_TYPE_TO_COMPRESSION else None
+      return True if file_mime in CONTENT_TYPE_TO_COMPRESSION else False
     
     except Exception as e:
       print(f"Error detecting compression type: {e}")
-      return None
+      return False

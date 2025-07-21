@@ -17,7 +17,7 @@ class DataSourceInfo:
 @dataclass(frozen=True)
 class DatasetsInfo:
     slug: str
-    url: str
+    urls: list
     file_name: str
 
     
@@ -29,7 +29,9 @@ EMBARGOS_DATA_SOURCES = {
     datasets=[
       DatasetsInfo(
         slug="Embargos IBAMA",
-        url="https://pamgia.ibama.gov.br/geoservicos/arquivos/adm_embargo_ibama_a.shp.zip",
+        urls=[
+          "https://pamgia.ibama.gov.br/geoservicos/arquivos/adm_embargo_ibama_a.shp.zip"
+        ],
         file_name="SITE_embargos_ibama.zip"
       )
     ]
@@ -40,7 +42,10 @@ EMBARGOS_DATA_SOURCES = {
     datasets=[
       DatasetsInfo(
         slug="Embargos ICMbio",
-        url="https://www.gov.br/icmbio/pt-br/assuntos/dados_geoespaciais/mapa-tematico-e-dados-geoestatisticos-das-unidades-de-conservacao-federais/embargos_icmbio_shp.zip",
+        urls=[
+          "https://www.gov.br/icmbio/pt-br/assuntos/dados_geoespaciais/mapa-tematico-e-dados-geoestatisticos-das-unidades-de-conservacao-federais/embargos_icmbio_shp.zip",
+          "https://www.gov.br/icmbio/pt-br/assuntos/dados_geoespaciais/mapa-tematico-e-dados-geoestatisticos-das-unidades-de-conservacao-federais/embargos_icmbio.zip"
+        ],
         file_name="SITE_embargos_icmbio.zip"
       )
     ]
@@ -51,7 +56,9 @@ EMBARGOS_DATA_SOURCES = {
     datasets=[
       DatasetsInfo(
         slug="Embargos SEMA MT",
-        url="https://geo.sema.mt.gov.br/geoserver/wfs?authkey=541085de-9a2e-454e-bdba-eb3d57a2f492&request=getfeature&service=wfs&version=1.0.0&typename=Geoportal:AREAS_EMBARGADAS_SEMA&outputformat=SHAPE-ZIP",
+        urls=[
+          "https://geo.sema.mt.gov.br/geoserver/wfs?authkey=541085de-9a2e-454e-bdba-eb3d57a2f492&request=getfeature&service=wfs&version=1.0.0&typename=Geoportal:AREAS_EMBARGADAS_SEMA&outputformat=SHAPE-ZIP"
+        ],
         file_name="SITE_embargos_sema_mt.zip"
       )
     ]
@@ -62,12 +69,16 @@ EMBARGOS_DATA_SOURCES = {
     datasets = [
       DatasetsInfo(
         slug="Embargos SIGA MT Polígono",
-        url="https://geo.sema.mt.gov.br/geoserver/wfs?authkey=541085de-9a2e-454e-bdba-eb3d57a2f492&request=getfeature&service=wfs&version=1.0.0&typename=Geoportal:AREA_EMBARGADA_SIGA_POLIGONO&outputformat=SHAPE-ZIP",
+        urls=[
+          "https://geo.sema.mt.gov.br/geoserver/wfs?authkey=541085de-9a2e-454e-bdba-eb3d57a2f492&request=getfeature&service=wfs&version=1.0.0&typename=Geoportal:AREA_EMBARGADA_SIGA_POLIGONO&outputformat=SHAPE-ZIP"
+        ],
         file_name="SITE_embargos_siga_poligono_mt.zip"
       ),
       DatasetsInfo(
         slug="Embargos SIGA MT Ponto",
-        url="https://geo.sema.mt.gov.br/geoserver/wfs?authkey=541085de-9a2e-454e-bdba-eb3d57a2f492&request=getfeature&service=wfs&version=1.0.0&typename=Geoportal:AREA_EMBARGADA_SIGA_PONTO&outputformat=SHAPE-ZIP",
+        urls=[
+          "https://geo.sema.mt.gov.br/geoserver/wfs?authkey=541085de-9a2e-454e-bdba-eb3d57a2f492&request=getfeature&service=wfs&version=1.0.0&typename=Geoportal:AREA_EMBARGADA_SIGA_PONTO&outputformat=SHAPE-ZIP"
+        ],
         file_name="SITE_embargos_siga_ponto_mt.zip"
       )
     ],
@@ -78,7 +89,9 @@ EMBARGOS_DATA_SOURCES = {
     datasets = [
       DatasetsInfo(
         slug="Embargos SIMGEO",
-        url="http://www.sema.mt.gov.br/transparencia/index.php/documentos/25/Dados-de-Desmatamento/2813/Base-de-Desmatamento-de-2018.zip",
+        urls=[
+          "http://www.sema.mt.gov.br/transparencia/index.php/documentos/25/Dados-de-Desmatamento/2813/Base-de-Desmatamento-de-2018.zip"
+        ],
         file_name="SITE_embargos_simgeo_mt.zip"
       )
     ],
@@ -89,17 +102,23 @@ EMBARGOS_DATA_SOURCES = {
     datasets = [  
       DatasetsInfo(
         slug="Embargos LDI manual",
-        url="https://monitoramento.semas.pa.gov.br/ldi/regioesdesmatamento/baixartodosshapefile?tipoShape=MANUAL",
+        urls=[
+          "https://monitoramento.semas.pa.gov.br/ldi/regioesdesmatamento/baixartodosshapefile?tipoShape=MANUAL"
+        ],
         file_name="SITE_embargos_LDI_manual.zip"
       ),
       DatasetsInfo(
         slug="Embargos LDI automatizado",
-        url="https://monitoramento.semas.pa.gov.br/ldi/regioesdesmatamento/baixartodosshapefile?tipoShape=AUTOMATIZADO",
+        urls=[
+          "https://monitoramento.semas.pa.gov.br/ldi/regioesdesmatamento/baixartodosshapefile?tipoShape=AUTOMATIZADO"
+        ],
         file_name="SITE_embargos_LDI_automatico.zip"
       ),
       DatasetsInfo(
         slug="Embargos LDI sem sobreposição",
-        url="https://monitoramento.semas.pa.gov.br/ldi/regioesdesmatamento/baixartodosshapefile?tipoShape=SEMSOBREPOSICAO",
+        urls=[
+          "https://monitoramento.semas.pa.gov.br/ldi/regioesdesmatamento/baixartodosshapefile?tipoShape=SEMSOBREPOSICAO"
+        ],
         file_name="SITE_embargos_LDI_sem_sobreposicao.zip"
       )
     ] 

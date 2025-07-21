@@ -1,7 +1,7 @@
 import asyncio
 import random
 import aiohttp
-from .compression_detector import CheckCompactedFile
+from .compression_detector import CheckCompactedFileResponse
 
 class CheckLink:
     def __init__(self, url: str):
@@ -28,7 +28,6 @@ class CheckLink:
 
     async def __request(self):
         try:
-            print('\033[32m')
             connector = aiohttp.TCPConnector(
             ssl=False, 
             limit=100,
@@ -44,8 +43,6 @@ class CheckLink:
                     
                     self.is_compacted_file = await self.__check_content_type(response)        
                     
-            
-            print('\033[0m')
         except aiohttp.ClientConnectionError  as e:  
             self.is_valid = False
             self.error_message = f"Erro de conexão: {str(e)}"
@@ -82,7 +79,7 @@ class CheckLink:
             print(f'\033[31mErro na requisição GET: {str(e)}\033[0m')
     
     async def __check_content_type(self, response):
-      checkCompactedFile = CheckCompactedFile(response)
+      checkCompactedFile = CheckCompactedFileResponse(response)
       return await checkCompactedFile.is_valid()
      
     def __get_status_message(self, status_code):
@@ -114,3 +111,6 @@ class CheckLink:
             'error_type': str(self.error_type) if self.error_type else None,
             'error_message': self.error_message
         }
+
+    def is_valid_compacted_file_link(self):
+        return self.is_valid and self.is_compacted_file

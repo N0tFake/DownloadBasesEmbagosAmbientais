@@ -43,11 +43,16 @@ class Downloader:
     def download(self, url, file_name, file_path):
         output = Path(file_path).joinpath(file_name)
         try:
-            print(f"Downloading {file_name} from {url}...")
+            # print(f"Downloading {file_name} from {url}...")
             path, header = urlretrieve(url, output)
             return {
+                'success': True,
                 'path': path, 
                 'header': header
             }
         except Exception as e:
-            print(f"Error downloading {file_name}: {e}")
+            # print(f"Error downloading {file_name}: {e}")
+            return {
+                'success': False,
+                'error': str(e)
+            }
